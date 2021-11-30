@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 class NoteDetail extends StatefulWidget {
   String appBarTitle;
@@ -21,6 +22,18 @@ class _NoteDetailState extends State<NoteDetail> {
       _curentPriority = changeValue;
     });
   }
+
+  // printFileContent() async {
+  //   String FileContent = await downloadFile();
+  //   print('The content is ----> $FileContent');
+  // }
+
+  // Future<String> downloadFile() {
+  //   Future<String> result = Future.delayed(Duration(seconds: 0), () {
+  //     return 'my secret content';
+  //   });
+  //   return result;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +129,7 @@ class _NoteDetailState extends State<NoteDetail> {
                   ],
                 ),
               ),
+              // Text(printFileContent()),
             ],
           ),
         ));
