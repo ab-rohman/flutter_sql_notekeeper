@@ -3,16 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sql_notekeeper/screen/screen_api.dart';
 import 'package:http/http.dart' as http;
 
-class addNote extends StatelessWidget {
+class EditNote extends StatelessWidget {
+  final Map note;
+  EditNote({required this.note});
   TextEditingController _matkulController = TextEditingController();
   TextEditingController _kelasController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Future saveNote() async {
-    final response =
-        await http.post(Uri.parse("http://127.0.0.1:8000/api/notes"), body: {
-      "matkul": _matkulController.text,
-      "kelas": _kelasController.text,
-    });
+  Future updateNote() async {
+    final response = await http.put(
+        Uri.parse("http://127.0.0.1:8000/api/notes/" + note['id'].toString()),
+        body: {
+          "matkul": _matkulController.text,
+          "kelas": _kelasController.text,
+        });
     return json.decode(response.body);
   }
 
@@ -20,14 +23,14 @@ class addNote extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add data page"),
+        title: Text("Edit data page"),
       ),
       body: Form(
         key: _formKey,
         child: Column(
           children: [
             TextFormField(
-              controller: _matkulController,
+              controller: _matkulController..text = note['matkul'],
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "masukkan nama matkul";
@@ -36,7 +39,7 @@ class addNote extends StatelessWidget {
               decoration: InputDecoration(labelText: "Matkul"),
             ),
             TextFormField(
-              controller: _kelasController,
+              controller: _kelasController..text = note['kelas'],
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "masukkan nama kelas";
@@ -47,17 +50,17 @@ class addNote extends StatelessWidget {
             ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    saveNote().then((value) {
+                    updateNote().then((value) {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return HomeApi();
                       }));
                       ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text("Note Added")));
+                          .showSnackBar(SnackBar(content: Text("Note Edited")));
                     });
                   }
                 },
-                child: Text("SAVE"))
+                child: Text("UPDATE"))
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sql_notekeeper/screen/edit_note.dart';
 
 class NoteApiDetail extends StatelessWidget {
   final Map note;
@@ -10,7 +11,13 @@ class NoteApiDetail extends StatelessWidget {
       appBar: AppBar(
         title: Text("Note Detail"),
       ),
-      body: Center(child: Text(note['matkul'])),
+      body: Center(
+          child: Column(
+        children: [
+          Text(note['matkul']),
+          Spacer()
+        ],
+      )),
     );
   }
 }
